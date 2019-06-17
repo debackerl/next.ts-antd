@@ -1,18 +1,10 @@
 import React from 'react';
-import App, { Container, AppContext } from 'next/app';
+import App, { Container } from 'next/app';
+
+// got to include external stylesheets at global level until https://github.com/zeit/next-plugins/issues/282 is fixed
 import 'antd/dist/antd.less';
 
 class MyApp extends App {
-  static async getInitialProps({ Component, ctx }: AppContext) {
-    let pageProps = {};
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-    }
-
-    return { pageProps };
-  }
-
   render() {
     const { Component, pageProps } = this.props;
 
