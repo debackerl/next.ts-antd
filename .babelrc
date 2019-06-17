@@ -1,0 +1,23 @@
+{
+  "presets": [
+    // preset loaded by babel for next compat
+    "next/babel"
+  ],
+  "plugins": [
+    [
+      // enable modularized antd using https://github.com/ant-design/babel-plugin-import
+      "import", {
+        "libraryName": "antd",
+        "style": false // disabled until https://github.com/zeit/next-plugins/issues/282 is fixed, global css loaded in _document.tsx
+
+        //"style": true // "css source files are imported and optimizations can be done during compilation time"
+
+        // using above options, following import:
+        //   import { Button } from 'antd';
+        // will be replaced as following by babel:
+        //   var Button = require('antd/lib/button');
+        //   require('antd/lib/button/style');
+      }
+    ]
+  ]
+}

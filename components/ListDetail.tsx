@@ -1,18 +1,17 @@
-import * as React from 'react'
-
-import { User } from '../interfaces'
+import * as React from 'react';
+import { Card } from 'antd';
+import { User } from '../interfaces';
 
 type ListDetailProps = {
   item: User
-}
+};
 
 const ListDetail: React.FunctionComponent<ListDetailProps> = ({
   item: user,
 }) => (
-  <div>
-    <h1>Detail for {user.name}</h1>
+  <Card title={user.name}>
     <p>ID: {user.id}</p>
-  </div>
-)
+  </Card>
+);
 
-export default ListDetail
+export default ListDetail;

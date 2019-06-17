@@ -3,8 +3,3 @@ node_modules
 .module-cache
 .next
 *.log*
-build
-dist
-test.*
-/server.js*
-/server.css*
