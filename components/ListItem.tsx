@@ -1,13 +1,14 @@
 import * as React from 'react';
-import Link from 'next/link';
+import { Link } from 'next-url-prettifier';
 import { User } from '../interfaces';
+import { Router } from '../routes';
 
 type Props = {
   data: User
 };
 
 const ListItem: React.FunctionComponent<Props> = ({ data }) => (
-  <Link href={`/detail?id=${data.id}`}>
+  <Link route={Router.getPrettyUrl('detail', { id: data.id })}>
     <a>
       {data.id}: {data.name}
     </a>

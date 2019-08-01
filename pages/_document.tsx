@@ -1,5 +1,7 @@
 import Document, { Head, Main, NextScript } from 'next/document';
 
+// do not import stylesheets here (next-css/less limitation)
+
 export default class MyDocument extends Document {
   render() {
     return (
@@ -7,7 +9,7 @@ export default class MyDocument extends Document {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
           <meta name="format-detection" content="telephone=no" />
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         </Head>
         <body>
           <Main />
