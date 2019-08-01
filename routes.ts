@@ -16,4 +16,4 @@ const routes: RouteType<string>[] = [
 ];
 
 export default routes;
-export var Router = new UrlPrettifier(routes);
+export const Router = new UrlPrettifier(routes);

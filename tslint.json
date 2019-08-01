@@ -11,7 +11,6 @@
     "no-this-assignment": { "severity": "error" },
     "no-unbound-method": { "severity": "warn" },
     "no-unsafe-finally": { "severity": "warn" },
-    "no-use-before-declare": { "severity": "error" },
     "no-var-keyword": { "severity": "error" },
     "no-void-expression": { "severity": "error" },
     "use-isnan": { "severity": "error" }
