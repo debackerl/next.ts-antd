@@ -1,5 +1,6 @@
 /* eslint-disable */
 const withLess = require('@zeit/next-less'); // https://github.com/zeit/next-plugins/tree/master/packages/next-less
+const withMdxEnhanced = require('next-mdx-enhanced');
 const lessToJS = require('less-vars-to-js');
 const fs = require('fs');
 const path = require('path');
@@ -14,7 +15,14 @@ const themeVariables = lessToJS(
   fs.readFileSync(path.resolve(__dirname, './assets/antd-custom.less'), 'utf8')
 );
 
-module.exports = withBundleAnalyzer(withLess({
+const withMdx = withMdxEnhanced({
+  layoutPath: 'layouts',
+  defaultLayout: true
+});
+
+module.exports = withBundleAnalyzer(withMdx(withLess({
+  pageExtensions: ['tsx', 'mdx'],
+
   lessLoaderOptions: {
     // http://lesscss.org/usage/
     javascriptEnabled: true, // allow in-line JS code in .less files (deprecated since less 3.0)
@@ -64,4 +72,4 @@ module.exports = withBundleAnalyzer(withLess({
 
     return config;
   },
-}));
+})));
