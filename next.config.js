@@ -5,6 +5,9 @@ const lessToJS = require('less-vars-to-js');
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
+const remarkSlug = require('remark-slug');
+const remarkAlign = require('remark-align');
+const remarkGemojiToEmoji = require('remark-gemoji-to-emoji');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
   // When enabled two HTML files (client.html and server.html) will be outputted to <distDir>/analyze/. One will be for the server bundle, one for the browser bundle.
@@ -17,11 +20,12 @@ const themeVariables = lessToJS(
 
 const withMdx = withMdxEnhanced({
   layoutPath: 'layouts',
-  defaultLayout: true
+  defaultLayout: true,
+  remarkPlugins: [remarkSlug, remarkAlign, remarkGemojiToEmoji]
 });
 
 module.exports = withBundleAnalyzer(withMdx(withLess({
-  pageExtensions: ['tsx', 'mdx'],
+  pageExtensions: ['mdx', 'tsx', 'jsx', 'ts', 'js'],
 
   lessLoaderOptions: {
     // http://lesscss.org/usage/

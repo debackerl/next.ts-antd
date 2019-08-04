@@ -3,6 +3,7 @@ import App, { Container } from 'next/app';
 
 // got to include external stylesheets at global level until https://github.com/zeit/next-plugins/issues/282 is fixed
 import 'antd/dist/antd.less';
+import '../assets/mdx.less';
 
 class MyApp extends App {
   render() {
