@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'next-url-prettifier';
+import Link from '../utils/Link';
 import { User } from '../interfaces';
 import { Router } from '../routes';
 

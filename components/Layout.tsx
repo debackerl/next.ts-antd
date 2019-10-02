@@ -1,12 +1,14 @@
 import * as React from 'react';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import Link from 'next/link';
 import Head from 'next/head';
 
 type Props = {
   title?: string
-};
+} & WithTranslation;
 
 const Layout: React.FunctionComponent<Props> = ({
+  t,
   children,
   title = 'This is the default title',
 }) => (
@@ -19,11 +21,11 @@ const Layout: React.FunctionComponent<Props> = ({
     <header>
       <nav>
         <Link href="/">
-          <a>Home</a>
+          <a>{t('home')}</a>
         </Link>{' '}
         |{' '}
         <Link href="/about">
-          <a>About</a>
+          <a>{t('about')}</a>
         </Link>{' '}
         |{' '}
         <Link href="/initial-props">
@@ -39,4 +41,4 @@ const Layout: React.FunctionComponent<Props> = ({
   </div>
 );
 
-export default Layout;
+export default withTranslation('common')(Layout);
