@@ -40,19 +40,26 @@ async function main() {
   const server = express();
   server.use(nextI18NextMiddleware(nextI18next));
 
+  // detect language and redirect
   const detectLocale = localeDetector(languages);
   server.get('/', (req, res) => {
     const lng = detectLocale(req);
     res.redirect(301, '/' + lng);
   });
 
+  // resolve pretty routes
   Router.forEachPrettyPattern((page: string, pattern: PatternType, defaultParams: ParamType) => server.get(pattern, async (req, res) => {
-    const query = Object.assign({}, defaultParams, req.query, req.params);
+    const query = Object.assign({}, defaultParams, req.params, req.query);
+
+    // good to switch language here so we can still load it async before rendering the page
     if(query.lng) await req.i18n.changeLanguage(query.lng);
+
     app.render(req, res, `/${page}`, query);
   }));
 
+  // resolve next.js routes
   server.get('*', (req, res) => handle(req, res));
+
   server.listen(port);
 
   console.log('Started.');
