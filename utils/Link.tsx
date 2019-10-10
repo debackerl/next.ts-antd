@@ -6,7 +6,7 @@ import { Link } from '../i18n';
 export type PropsType = {
   children?: any,
   route?: RouteLinkParamsType
-} & LinkProps;
+} & Partial<LinkProps>;
 
 export default class extends React.Component<PropsType> {
   props: PropsType;
