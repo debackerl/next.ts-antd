@@ -2,14 +2,14 @@ import * as React from 'react';
 import { default as NextLink, LinkProps } from 'next/link';
 import { withRouter } from 'next/router';
 import { WithRouterProps } from 'next/dist/client/with-router';
-import { default as pathToRegexp, PathFunction } from 'path-to-regexp';
+import pathToRegexp from 'path-to-regexp';
 import * as querystring from 'querystring';
 
 export type ParamsType = Record<string, string | string[]>;
 
 export type Route<P extends ParamsType> = {
   path: string,
-  defaultParams?: P
+  defaultParams?: Partial<P>
 };
 
 export type Page<P extends ParamsType, K extends string> = {
