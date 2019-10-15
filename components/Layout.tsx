@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { withTranslation, WithTranslation, Link } from '../i18n';
+import { withTranslation, WithTranslation } from '../i18n';
+import { Link } from '../routing';
 import Head from 'next/head';
 
 type Props = {

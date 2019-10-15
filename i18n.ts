@@ -24,6 +24,5 @@ export type WithTranslation = WithTranslation;
 
 export const {
   appWithTranslation,
-  withTranslation,
-  Link
+  withTranslation
 } = NextI18NextInstance;

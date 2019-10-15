@@ -2,7 +2,7 @@ import express from 'express';
 import next from 'next';
 import nextI18NextMiddleware from 'next-i18next/middleware';
 import { PatternType, ParamType } from 'next-url-prettifier';
-import { Router } from './routes';
+import { registry } from './routing';
 import nextI18next, { languages } from './i18n';
 import Negotiator from 'negotiator';
 import * as bcp47 from 'bcp47';
@@ -48,13 +48,13 @@ async function main() {
   });
 
   // resolve pretty routes
-  Router.forEachPrettyPattern((page: string, pattern: PatternType, defaultParams: ParamType) => server.get(pattern, async (req, res) => {
+  registry.forEachRoute((pageName: string, pattern: PatternType, defaultParams: ParamType) => server.get(pattern, async (req, res) => {
     const query = Object.assign({}, defaultParams, req.params, req.query);
 
     // good to switch language here so we can still load it async before rendering the page
     if(query.lng) await req.i18n.changeLanguage(query.lng);
 
-    app.render(req, res, `/${page}`, query);
+    app.render(req, res, `/${pageName}`, query);
   }));
 
   // resolve next.js routes
