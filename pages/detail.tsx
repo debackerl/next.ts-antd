@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NextPageContext } from 'next';
 import Layout from '../components/Layout';
 import { User } from '../interfaces';
-import { findData } from '../utils/sample-api';
+import { findData } from '../data/sample-api';
 import ListDetail from '../components/ListDetail';
 
 type Props = {

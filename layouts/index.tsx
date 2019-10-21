@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MdxLayout } from 'next-mdx-enhanced';
 import Layout from '../components/Layout';
-import { Link } from '../routing';
+import Link from '../components/Link';
 
 const DefaultLayout: MdxLayout = (frontMatter): React.FunctionComponent => (({ children }) => (
   <Layout title={frontMatter.title}>

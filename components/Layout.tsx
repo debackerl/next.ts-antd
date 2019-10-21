@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withTranslation, WithTranslation } from '../i18n';
-import { Link } from '../routing';
+import Link from '../components/Link';
 import Head from 'next/head';
 
 type Props = {
@@ -20,15 +20,15 @@ const Layout: React.FunctionComponent<Props> = ({
     </Head>
     <header>
       <nav>
-        <Link href="/">
+        <Link pageName="index">
           <a>{t('home')}</a>
         </Link>{' '}
         |{' '}
-        <Link href="/about">
+        <Link pageName="about">
           <a>{t('about')}</a>
         </Link>{' '}
         |{' '}
-        <Link href="/initial-props">
+        <Link pageName="initial-props">
           <a>With Initial Props</a>
         </Link>
       </nav>

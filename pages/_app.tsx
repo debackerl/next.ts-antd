@@ -1,8 +1,8 @@
 import React from 'react';
 import { ConfigProvider } from 'antd';
 import { Locale as AntdLocale } from 'antd/lib/locale-provider';
-import enUS from 'antd/es/locale/en_US';
-import frFR from 'antd/es/locale/fr_FR';
+import enUS from 'antd/lib/locale/en_US';
+import frFR from 'antd/lib/locale/fr_FR';
 import App, { Container, AppContext, AppInitialProps } from 'next/app';
 import { appWithTranslation } from '../i18n';
 

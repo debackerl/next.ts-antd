@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { User } from '../interfaces';
-import { Link } from '../routing';
+import Link from '../components/Link';
 
 type Props = {
   data: User
