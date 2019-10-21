@@ -16,3 +16,7 @@ Assumptions and goals:
 * All pages and components must be typed using TypeScript
 * Simple text pages can be written in MDX, extending Markdown with React
 * Less is enough for our styling needs, we want to avoid the learning curve of Sass
+
+Notes:
+* Do note reference jsx or tsx modules directly or indirectly from server.ts, because TypeScript is configured
+  to transpile tsx to jsx, which is transpiled to js by babel.

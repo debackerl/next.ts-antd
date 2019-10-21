@@ -33,15 +33,15 @@
     "cross-env": "^6.0.3"
   },
   "devDependencies": {
-    "@types/node": "^10.14.9",
+    "@types/node": "^12.11.2",
     "@types/express": "^4.17.0",
     "@types/react": "^16.8.24",
     "@types/react-dom": "^16.8.5",
     "@types/negotiator": "^0.6.1",
-    "typescript": "^3.5.3",
+    "typescript": "^3.6.4",
     "babel-plugin-import": "^1.12.0",
     "null-loader": "2.0.0",
-    "tslint": "^5.18.0",
+    "tslint": "^5.20.0",
     "@next/bundle-analyzer": "^9.0.3",
     "remark-slug": "^5.1.2",
     "remark-align": "^1.2.7",
