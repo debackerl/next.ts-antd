@@ -82,9 +82,12 @@ function load<R extends Record<string, any>>(pages: { [K in keyof R]: Page<R[K],
             let qsParams: ParamsType = null;
             for(let key in params) {
               if(key && !keysSet.has(key)) {
-                if(!qsParams) qsParams = {};
                 const value = params[key];
-                qsParams[key] = value;
+
+                if(!route.defaultParams || value !== route.defaultParams[key]) {
+                  if(!qsParams) qsParams = {};
+                  qsParams[key] = value;
+                }
               }
             }
 
