@@ -3,23 +3,50 @@ import * as querystring from 'querystring';
 
 export type ParamsType = Record<string, string | string[]>;
 
-export type RouteFunction = (params: any, variables: any) => string;
+export type RouteFunction = (params: any, variables: any) => SerializedRoute;
 
 export type Route<P extends ParamsType> = {
+  /** Url Pattern identifying this route. */
   path: string,
+  /** Value of parameters to pass to the Page if not overriden in the query string. */
   defaultParams?: Partial<P>
 };
 
 export type Page<P extends ParamsType, K extends string> = {
+  /**
+   * Returns the appropriate route given `variables`.
+   * @param variables Provides all parameters and context variables.
+   */
   selector: (variables: P, routes: Record<K, RouteFunction>) => RouteFunction,
+
+  /** Definition of routes leading to the current page, indexed by a unique id. */
   routes: Record<K, Route<P>>
 };
 
 export type RouteIterator = (pageName: string, path: string, defaultParams: any) => void;
 
 export type Registry<R extends Record<string, any>> = {
-  toUrl<N extends keyof R>(pageName: N, params: Partial<R[N]>, context?: any): string,
+  /**
+   * Serializes a route to a given page.
+   * @param pageName Name of the page to reference.
+   * @param params Parameters which must be passed, either in the route or as query string.
+   * @param context Context variables which may be used to fill missing keys in the route.
+   * @returns Returns object contains `href` Url as understook by Link.js, and `as` Url to display in the browser.
+  */
+  serialize<N extends keyof R>(pageName: N, params: Partial<R[N]>, context?: any): SerializedRoute,
+
+  /**
+   * Iterates over all routes present in this Registry.
+   * @param iterator The iterator to call once per route.
+   */
   forEachRoute(iterator: RouteIterator): void
+};
+
+export type SerializedRoute = {
+  /** Path interpreted by Next.js */
+  href: string,
+  /** Path to be displayed by the browser. */
+  as: string
 };
 
 // extracts type of PageName from type of a Registry
@@ -28,16 +55,17 @@ export type PageNameType<T> = T extends Registry<Record<infer K, any>> ? K : nev
 export type RoutesType<T> = T extends Registry<infer R> ? R : never;
 
 function load<R extends Record<string, any>>(pages: { [K in keyof R]: Page<R[K], string> }): Registry<R> {
-  let serializersByPageName: Record<string, (params: any, context: any) => string> = {};
+  let serializersByPageName: Record<string, (params: any, context: any) => SerializedRoute> = {};
 
   for(let pageName in pages) {
     if(pageName) {
       const page = pages[pageName];
 
-      let routesSerializer: Record<string, (params: any, variables: any) => string> = {};
+      let routesSerializer: Record<string, (params: any, variables: any) => SerializedRoute> = {};
       for(let routeName in page.routes) {
         if(routeName) {
-          const path = page.routes[routeName].path;
+          const route = page.routes[routeName];
+          const path = route.path;
           let keys: pathToRegexp.Key[] = [];
           /*const regexp =*/ pathToRegexp(path, keys);
           const toPath = pathToRegexp.compile(path);
@@ -47,26 +75,45 @@ function load<R extends Record<string, any>>(pages: { [K in keyof R]: Page<R[K],
             if(typeof(k.name) === 'string') keysSet.add(k.name);
           }
 
-          routesSerializer[routeName] = function(params: any, variables: any): string {
-            let url = toPath(variables);
+          routesSerializer[routeName] = function(params: any, variables: any): SerializedRoute {
+            let href = '/' + pageName;
+            let as = toPath(variables);
 
-            let extraParams: ParamsType = null;
+            let qsParams: ParamsType = null;
             for(let key in params) {
               if(key && !keysSet.has(key)) {
+                if(!qsParams) qsParams = {};
                 const value = params[key];
-                if(!extraParams) extraParams = {};
-                extraParams[key] = value;
+                qsParams[key] = value;
               }
             }
 
-            if(extraParams) url += '?' + querystring.stringify(extraParams);
+            if(qsParams) {
+              as += '?' + querystring.stringify(qsParams);
+            }
 
-            return url;
+            if(route.defaultParams) {
+              if(!qsParams) qsParams = {};
+              qsParams = Object.assign({}, route.defaultParams, qsParams);
+            }
+
+            if(keys.length) {
+              if(!qsParams) qsParams = {};
+              for(let k of keys) {
+                qsParams[k.name] = variables[k.name];
+              }
+            }
+
+            if(qsParams) {
+              href += '?' + querystring.stringify(qsParams);
+            }
+
+            return { href, as };
           }
         }
       }
 
-      serializersByPageName[pageName] = function(params: any, context?: any): string {
+      serializersByPageName[pageName] = function(params: any, context?: any): SerializedRoute {
         const variables = context ? Object.assign({}, context, params) : params;
         const route = page.selector(variables, routesSerializer);
         return route(params, variables);
@@ -75,7 +122,7 @@ function load<R extends Record<string, any>>(pages: { [K in keyof R]: Page<R[K],
   }
 
   return {
-    toUrl: function<N extends keyof R>(pageName: N, params: Partial<R[N]>, context?: any): string {
+    serialize: function<N extends keyof R>(pageName: N, params: Partial<R[N]>, context?: any): SerializedRoute {
       const serializer = serializersByPageName[pageName as string];
       if(!serializer) return null;
 
@@ -124,9 +171,9 @@ export const registry = load({
   },
 
   "detail" : {
-    selector: function(variables: { id: string }, routes) { return routes.default; },
+    selector: function(variables: { lng: string, id: string }, routes) { return routes.default; },
     routes: {
-      default: { path: '/details/:id' }
+      default: { path: '/:lng/details/:id' }
     }
   },
 

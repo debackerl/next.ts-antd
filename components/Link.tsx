@@ -7,7 +7,7 @@ import { registry, PageName, Routes } from '../routing';
 export type LinkPropsType<N extends PageName> = {
   children?: any,
   pageName?: N,
-  params?: Routes[N]
+  params?: Partial<Routes[N]>
 } & Partial<LinkProps> & WithRouterProps;
 
 const defaultParams = {};
@@ -22,9 +22,10 @@ class BareLink<N extends PageName> extends React.Component<LinkPropsType<N>> {
     if(href) {
       return <NextLink href={href} children={children} {...rest} />;
     } else {
-      const url = registry.toUrl(pageName || router.route.slice(1) as N, params || defaultParams, router.query);
+      const res = registry.serialize(pageName || router.route.slice(1) as N, params || defaultParams, router.query);
+
       // if no matching route has been found, url will be null
-      return <NextLink href={`/${pageName}`} as={url} children={children} {...rest} />;
+      return <NextLink href={res.href} as={res.as} children={children} {...rest} />;
     }
   }
 }
