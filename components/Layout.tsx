@@ -30,6 +30,14 @@ const Layout: React.FunctionComponent<Props> = ({
         |{' '}
         <Link pageName="initial-props">
           <a>With Initial Props</a>
+        </Link>{' '}
+        |{' '}
+        <Link params={{ lng: 'fr' }}>
+          <a>fr</a>
+        </Link>{' '}
+        |{' '}
+        <Link params={{ lng: 'en' }}>
+          <a>en</a>
         </Link>
       </nav>
     </header>

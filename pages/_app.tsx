@@ -4,7 +4,7 @@ import { Locale as AntdLocale } from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale/en_US';
 import frFR from 'antd/lib/locale/fr_FR';
 import App, { Container, AppContext, AppInitialProps } from 'next/app';
-import { appWithTranslation } from '../i18n';
+import { appWithTranslation, i18n } from '../i18n';
 
 // got to include external stylesheets at global level until https://github.com/zeit/next-plugins/issues/282 is fixed
 import 'antd/dist/antd.less';
@@ -24,6 +24,16 @@ class MyApp extends App<Props> {
     const appProps = await App.getInitialProps(appContext);
     return { ...appProps };
   }*/
+
+  shouldComponentUpdate(nextProps: any, nextState: any): boolean {
+    // render() should be side-effect free, so we change language of i18n here
+
+    const { router } = nextProps;
+    const lng = router.query.lng as string;
+    i18n.changeLanguage(lng);
+
+    return true;
+  }
 
   render() {
     const { Component, router, pageProps } = this.props;
