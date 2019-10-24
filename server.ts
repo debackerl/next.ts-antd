@@ -40,6 +40,10 @@ async function main() {
   const server = express();
   server.use(nextI18NextMiddleware(nextI18next));
 
+  server.get('/favicon.ico', function(req, res) {
+    res.status(404).send('Not found');
+  });
+
   // detect language and redirect
   const detectLocale = localeDetector(languages);
   server.get('/', (req, res) => {
