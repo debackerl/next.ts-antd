@@ -3,7 +3,7 @@ import { ConfigProvider } from 'antd';
 import { Locale as AntdLocale } from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale/en_US';
 import frFR from 'antd/lib/locale/fr_FR';
-import App, { Container, AppContext, AppInitialProps } from 'next/app';
+import App, { Container } from 'next/app';
 import { appWithTranslation, withTranslation, WithTranslation } from '../i18n';
 
 // got to include external stylesheets at global level until https://github.com/zeit/next-plugins/issues/282 is fixed
@@ -37,10 +37,9 @@ class MyApp extends App<Props & WithTranslation> {
     const i18n = this.props.i18n;
     if(this.language !== i18n.language) {
       i18n.changeLanguage(this.language);
-      return true;
     }
 
-    return false;
+    return true;
   }
 
   render() {
