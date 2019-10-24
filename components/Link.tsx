@@ -22,7 +22,7 @@ class BareLink<N extends PageName> extends React.Component<LinkPropsType<N>> {
     if(href) {
       return <NextLink href={href} children={children} {...rest} />;
     } else {
-      const res = registry.serialize(pageName || router.route.slice(1) as N, params || defaultParams, router.query);
+      const res = registry.serialize(pageName || router.route.slice(1) as N || 'index', params || defaultParams, router.query);
 
       // if no matching route has been found, res will be null
       if(res)
