@@ -8,6 +8,7 @@ const webpack = require('webpack');
 const remarkSlug = require('remark-slug');
 const remarkAlign = require('remark-align');
 const remarkGemojiToEmoji = require('remark-gemoji-to-emoji');
+const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
   // When enabled two HTML files (client.html and server.html) will be outputted to <distDir>/analyze/. One will be for the server bundle, one for the browser bundle.
@@ -41,6 +42,9 @@ module.exports = withBundleAnalyzer(withMdx(withLess({
     // https://webpack.js.org/plugins/context-replacement-plugin/
     // https://github.com/moment/moment/issues/2416
     config.plugins.push(new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl|fr/));
+
+    // https://www.npmjs.com/package/duplicate-package-checker-webpack-plugin
+    config.plugins.push(new DuplicatePackageCheckerPlugin({ strict: true }));
 
     // https://github.com/zeit/next.js/issues/4101
     config.resolve.alias['@ant-design/icons/lib/dist$'] = path.join(__dirname, 'assets/icons.ts');
